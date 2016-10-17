@@ -38,6 +38,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -161,6 +164,14 @@ public class RunnerView extends ViewPart
 				Object element = event.getElement();
 				if(element instanceof IExpandable) {
 					((IExpandable) element).setExpanded(false);
+				}
+			}
+		});
+		viewer.getTree().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent ke) {
+				if (ke.character == SWT.DEL) {
+					removeAction.run();
 				}
 			}
 		});
@@ -427,6 +438,7 @@ public class RunnerView extends ViewPart
 		manager.add(addNewCategoryAction);
 		manager.add(new Separator());
 		manager.add(renameAction);
+		removeAction.setAccelerator(SWT.DEL);
 		manager.add(removeAction);
 		if( launchNode != null) {
 			manager.add(new Separator());
